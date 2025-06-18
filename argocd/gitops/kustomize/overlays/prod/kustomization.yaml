@@ -12,3 +12,7 @@ patches:
     target:
       kind: Deployment
       name: grade-submission-api
+  - path: service-patch.yaml
+    target:
+      kind: Service
+      name: grade-submission-api
