@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/rslim087a/argocd-kubernetes-gitops-tutorial.git
+    repoURL: https://github.com/TrieuBui1012/lakehouse.git
     targetRevision: HEAD
-    path: gitops/basic
+    path: argocd/gitops/basic-test
   destination:
     server: https://kubernetes.default.svc
     namespace: grade-demo
