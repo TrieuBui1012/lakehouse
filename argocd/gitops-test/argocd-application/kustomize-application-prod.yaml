@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: grade-submission-dev
+  name: grade-submission-prod
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/TrieuBui1012/lakehouse.git
     targetRevision: HEAD
-    path: argocd/gitops/kustomize/overlays/dev
+    path: argocd/gitops-test/kustomize/overlays/prod
   destination:
     server: https://kubernetes.default.svc
     namespace: grade-demo
