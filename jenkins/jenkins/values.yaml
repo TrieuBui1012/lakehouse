@@ -1153,7 +1153,8 @@ agent:
   # -- Timeout in seconds for an agent to be online
   connectTimeout: 100
   # -- Annotations to apply to the pod
-  annotations: {}
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
 
   # Containers specified here are added to all agents. Set key empty to remove container from additional agents.
   # -- Add additional containers to the agents
