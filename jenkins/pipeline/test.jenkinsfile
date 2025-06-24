@@ -1,39 +1,37 @@
-pipeline {
-	agent any
-	tools {
-	    maven "MAVEN3.9"
-	    jdk "JDK17"
-	}
-
-	stages {
-	    stage('Fetch code') {
-            steps {
-               git branch: 'atom', url: 'https://github.com/hkhcoder/vprofile-project.git'
-            }
-
-	    }
-
-
-       stage('UNIT TEST') {
+pipeline{
+    agent any
+    tools {
+        // Define any tools you need here, e.g., JDK, Maven, etc.
+        jdk "JDK17"
+        maven "MAVEN3.9"
+    }
+    stages{
+        stage("A"){
             steps{
-                sh 'mvn test'
+                echo "========executing A========"
+            }
+            post{
+                always{
+                    echo "========always========"
+                }
+                success{
+                    echo "========A executed successfully========"
+                }
+                failure{
+                    echo "========A execution failed========"
+                }
             }
         }
-
-
-	    stage('Build'){
-	        steps{
-	           sh 'mvn install -DskipTests'
-	        }
-
-	        post {
-	           success {
-	              echo 'Now Archiving it...'
-	              archiveArtifacts artifacts: '**/target/*.war'
-	           }
-	        }
-	    }
-
-	    
-	}
+    }
+    post{
+        always{
+            echo "========always========"
+        }
+        success{
+            echo "========pipeline executed successfully ========"
+        }
+        failure{
+            echo "========pipeline execution failed========"
+        }
+    }
 }

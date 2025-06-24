@@ -17,10 +17,6 @@ spec:
     server: https://kubernetes.default.svc
     namespace: jenkins
   syncPolicy:
-    automated:
-      prune: true
-      allowEmpty: true
-      selfHeal: false
     syncOptions:
       - CreateNamespace=true
       - UseHelmInstall=true
