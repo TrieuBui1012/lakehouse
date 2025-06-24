@@ -18,6 +18,5 @@ spec:
     namespace: jenkins
   syncPolicy:
     syncOptions:
-      - Prune=false
       - CreateNamespace=true
       - UseHelmInstall=true
