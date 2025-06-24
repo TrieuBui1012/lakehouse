@@ -989,8 +989,8 @@ agent:
       memory: "512Mi"
       # ephemeralStorage:
     limits:
-      cpu: "512m"
-      memory: "512Mi"
+      cpu: "1"
+      memory: "1Gi"
       # ephemeralStorage:
   livenessProbe: {}
   #  execArgs: "cat /tmp/healthy"
