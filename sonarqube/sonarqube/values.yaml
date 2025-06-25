@@ -462,7 +462,7 @@ resources:
     ephemeral-storage: 2000M
 
 persistence:
-  enabled: true
+  enabled: false
   ## Set annotations on pvc
   annotations: {}
 
