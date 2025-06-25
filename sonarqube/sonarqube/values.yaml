@@ -228,7 +228,7 @@ readinessProbe:
         exit 0
       fi
       exit 1
-  initialDelaySeconds: 60
+  initialDelaySeconds: 360
   periodSeconds: 30
   failureThreshold: 6
   # Note that timeoutSeconds was not respected before Kubernetes 1.20 for exec probes
@@ -245,7 +245,7 @@ livenessProbe:
     - -c
     - |
       wget --no-proxy --quiet -O /dev/null --timeout={{ .Values.livenessProbe.timeoutSeconds }} --header="X-Sonar-Passcode: $SONAR_WEB_SYSTEMPASSCODE" "http://localhost:{{ .Values.service.internalPort }}{{ .Values.livenessProbe.sonarWebContext | default (include "sonarqube.webcontext" .) }}api/system/liveness"
-  initialDelaySeconds: 60
+  initialDelaySeconds: 360
   periodSeconds: 30
   failureThreshold: 6
   # Note that timeoutSeconds was not respected before Kubernetes 1.20 for exec probes
@@ -256,7 +256,7 @@ livenessProbe:
   # sonarWebContext: /
 
 startupProbe:
-  initialDelaySeconds: 30
+  initialDelaySeconds: 360
   periodSeconds: 10
   failureThreshold: 24
   # Note that timeoutSeconds was not respected before Kubernetes 1.20 for exec probes
@@ -453,13 +453,13 @@ annotations: {}
 ## Adjust these values to your needs, you can find more details on the main README of the chart.
 resources:
   limits:
-    cpu: 500m
-    memory: 2048M
-    ephemeral-storage: 1536M
+    cpu: 1500m
+    memory: 2500M
+    ephemeral-storage: 2000M
   requests:
-    cpu: 500m
-    memory: 2048M
-    ephemeral-storage: 1536M
+    cpu: 1500m
+    memory: 2500M
+    ephemeral-storage: 2000M
 
 persistence:
   enabled: true
