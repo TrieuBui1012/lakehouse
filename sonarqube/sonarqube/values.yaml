@@ -518,7 +518,7 @@ jdbcOverwrite:
   # If enable the JDBC Overwrite, make sure to set `postgresql.enabled=false`
   enabled: true
   # The JDBC url of the external DB
-  jdbcUrl: "jdbc:postgresql://myPostgress/myDatabase"
+  jdbcUrl: "jdbc:postgresql://postgresql-sonarqube.sonnarqube.svc.cluster.local:5432/sonarqube"
   # The DB user that should be used for the JDBC connection
   jdbcUsername: "sonarqube"
   # Use this if you don't mind the DB password getting stored in plain text within the values file
