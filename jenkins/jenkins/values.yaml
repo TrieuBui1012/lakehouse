@@ -986,11 +986,11 @@ agent:
   resources:
     requests:
       cpu: "1"
-      memory: "1Gi"
+      memory: "2Gi"
       # ephemeralStorage:
     limits:
       cpu: "1"
-      memory: "1Gi"
+      memory: "2Gi"
       # ephemeralStorage:
   livenessProbe: {}
   #  execArgs: "cat /tmp/healthy"
