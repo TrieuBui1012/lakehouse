@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sonarqube-helm
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/TrieuBui1012/lakehouse.git
+    targetRevision: HEAD
+    path: sonarqube/sonarqube
+    helm:
+      releaseName: sonarqube
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sonarqube
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - UseHelmInstall=true
