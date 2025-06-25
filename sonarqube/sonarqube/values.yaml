@@ -94,6 +94,7 @@ service:
   type: NodePort
   externalPort: 9000
   internalPort: 9000
+  nodePort: 30900
   labels:
   annotations: {}
   # May be used in example for internal load balancing in GCP:
