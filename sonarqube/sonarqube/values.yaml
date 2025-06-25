@@ -91,7 +91,7 @@ elasticsearch:
   bootstrapChecks: true
 
 service:
-  type: ClusterIP
+  type: NodePort
   externalPort: 9000
   internalPort: 9000
   labels:
@@ -137,8 +137,8 @@ ingress-nginx:
   enabled: false
 
   # You can add here any values from the official nginx ingress chart
-  # controller:
-  #   replicaCount: 3
+  controller:
+    replicaCount: 1
 
 httproute:
   enabled: false
@@ -462,7 +462,7 @@ resources:
     ephemeral-storage: 1536M
 
 persistence:
-  enabled: false
+  enabled: true
   ## Set annotations on pvc
   annotations: {}
 
@@ -478,7 +478,7 @@ persistence:
   ##
   storageClass:
   accessMode: ReadWriteOnce
-  size: 5Gi
+  size: 3Gi
   uid: 1000
   guid: 0
 
@@ -516,11 +516,11 @@ jdbcOverwrite:
   # (DEPRECATED) Please use jdbcOverwrite.enabled instead
   # enable: false
   # If enable the JDBC Overwrite, make sure to set `postgresql.enabled=false`
-  enabled: false
+  enabled: true
   # The JDBC url of the external DB
   jdbcUrl: "jdbc:postgresql://myPostgress/myDatabase"
   # The DB user that should be used for the JDBC connection
-  jdbcUsername: "sonarUser"
+  jdbcUsername: "sonarqube"
   # Use this if you don't mind the DB password getting stored in plain text within the values file
   # (DEPRECATED) Please use `jdbcOverwrite.jdbcSecretName` along with `jdbcOverwrite.jdbcSecretPasswordKey` instead
   # jdbcPassword: "sonarPass"
@@ -571,7 +571,7 @@ postgresql:
   persistence:
     enabled: true
     accessMode: ReadWriteOnce
-    size: 5Gi
+    size: 3Gi
     storageClass:
   securityContext:
     enabled: true
