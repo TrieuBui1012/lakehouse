@@ -74,7 +74,7 @@ pipeline {
                     protocol: 'http',
                     nexusUrl: 'nexus.nexus.svc.cluster.local:8081',
                     groupId: 'com.vprofile',
-                    version: '${env.BUILD_ID}-${env.BUILD_TIMESTAMP}',
+                    version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
                     repository: 'vprofile-repo',
                     credentialsId: 'nexus-login',
                     artifacts: [
