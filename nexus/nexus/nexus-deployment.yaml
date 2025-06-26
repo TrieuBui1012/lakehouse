@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus-deployment
+  labels:
+    app: nexus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nexus
+  template:
+    metadata:
+      labels:
+        app: nexus
+    spec:
+      containers:
+      - name: nexus
+        image: trieubui1012/nexus3:3.81.1-01-java17-redhat
+        ports:
+        - containerPort: 8081
+        env:
+        - name: INSTALL4J_ADD_VM_PARAMS
+          value: "-Xms1725m -Xmx1725m -XX:MaxDirectMemorySize=860m -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
+        - name: NEXUS_DATASTORE_NEXUS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nexus-datastore-secret
+              key: db-password
+        resources:
+          requests:
+            memory: "3500Mi"
+            cpu: "2"
+          limits:
+            memory: "3500Mi"
+            cpu: "2"
+        volumeMounts:
+            - name: nexus-vol
+              mountPath: /nexus-data
+      volumes:
+        - name: nexus-vol
+          emptyDir: {}
+

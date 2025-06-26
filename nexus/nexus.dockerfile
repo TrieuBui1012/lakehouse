@@ -48,10 +48,10 @@ VOLUME ${NEXUS_DATA}
 EXPOSE 8081
 USER nexus
 
-ENV INSTALL4J_ADD_VM_PARAMS="-Xms2703m -Xmx2703m -XX:MaxDirectMemorySize=2703m -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs"
-
-ENV NEXUS_DATASTORE_NEXUS_JDBCURL="jdbc:postgresql://postgresql-:<database-port>/<database-name>?<param1>=<value1>&<param2>=<value2>"
+ENV NEXUS_DATASTORE_NEXUS_JDBCURL="jdbc:postgresql://postgresql-nexus.nexus.svc.cluster.local:5432/nexus?gssEncMode=disable&tcpKeepAlive=true&loginTimeout=5&connectionTimeout=5&socketTimeout=30&cancelSignalTimeout=5&targetServerType=primary"
 ENV NEXUS_DATASTORE_NEXUS_USERNAME="nexus"
-ENV NEXUS_DATASTORE_NEXUS_PASSWORD="nexus"
+
+ENV NEXUS_DATASTORE_NEXUS_ADVANCED="maximumPoolSize=200"
+ENV NEXUS_DATASTORE_NEXUS_ADVANCED="maxLifetime=840000"
 
 CMD ["/opt/sonatype/nexus/bin/nexus", "run"]

@@ -11,7 +11,7 @@ spec:
     storage: 2Gi
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: /data/postgresql-volume/
+    path: /data/postgresql-nexus-volume/
 
 ---
 apiVersion: storage.k8s.io/v1
