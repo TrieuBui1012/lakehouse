@@ -133,11 +133,9 @@ service:
   # If specified, the name used for the Trivy service.
   name:
   # type Kubernetes service type
-  type: NodePort
+  type: ClusterIP
   # port Kubernetes service port
   port: 4954
-  targetPort: 4954
-  nodePort: 30954
   # sessionAffinity Kubernetes service session affinity
   sessionAffinity: ClientIP
 
