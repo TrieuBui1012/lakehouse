@@ -30,10 +30,10 @@ spec:
         resources:
           requests:
             memory: "3500Mi"
-            cpu: "2"
+            cpu: "1500m"
           limits:
             memory: "3500Mi"
-            cpu: "2"
+            cpu: "1500m"
         volumeMounts:
             - name: nexus-vol
               mountPath: /nexus-data

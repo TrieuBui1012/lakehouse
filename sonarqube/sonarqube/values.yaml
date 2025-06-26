@@ -454,11 +454,11 @@ annotations: {}
 ## Adjust these values to your needs, you can find more details on the main README of the chart.
 resources:
   limits:
-    cpu: "2"
+    cpu: "1500m"
     memory: 3500M
     ephemeral-storage: 3000M
   requests:
-    cpu: "2"
+    cpu: "1500m"
     memory: 3500M
     ephemeral-storage: 3000M
 
