@@ -788,7 +788,7 @@ primary:
     enabled: true
     ## @param primary.persistence.volumeName Name to assign the volume
     ##
-    volumeName: "postgresql-data"
+    volumeName: "postgresql-sonarqube-data"
     ## @param primary.persistence.existingClaim Name of an existing PVC to use
     ##
     existingClaim: ""
@@ -807,7 +807,7 @@ primary:
     ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
     ##   GKE, AWS & OpenStack)
     ##
-    storageClass: "postgresql-pv"
+    storageClass: "longhorn"
     ## @param primary.persistence.accessModes PVC Access Mode for PostgreSQL volume
     ##
     accessModes:

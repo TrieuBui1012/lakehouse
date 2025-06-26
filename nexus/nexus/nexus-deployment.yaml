@@ -39,5 +39,6 @@ spec:
               mountPath: /nexus-data
       volumes:
         - name: nexus-vol
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: nexus-pvc
 
