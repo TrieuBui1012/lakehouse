@@ -23,10 +23,7 @@ spec:
         - name: INSTALL4J_ADD_VM_PARAMS
           value: "-Xms1500m -Xmx1500m -XX:MaxDirectMemorySize=725m -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
         - name: NEXUS_DATASTORE_NEXUS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: nexus-datastore-secret
-              key: db-password
+          value: "nexus"
         resources:
           requests:
             memory: "3000Mi"

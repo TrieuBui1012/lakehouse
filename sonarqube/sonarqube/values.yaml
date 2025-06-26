@@ -524,11 +524,11 @@ jdbcOverwrite:
   jdbcUsername: "sonarqube"
   # Use this if you don't mind the DB password getting stored in plain text within the values file
   # (DEPRECATED) Please use `jdbcOverwrite.jdbcSecretName` along with `jdbcOverwrite.jdbcSecretPasswordKey` instead
-  # jdbcPassword: "sonarPass"
+  jdbcPassword: "sonarqube"
   ## Alternatively, use a pre-existing k8s secret containing the DB password
-  jdbcSecretName: "sonarqube-jdbc"
+  # jdbcSecretName: "sonarqube-jdbc"
   ## and the secretValueKey of the password found within that secret
-  jdbcSecretPasswordKey: "jdbc-password"
+  # jdbcSecretPasswordKey: "jdbc-password"
   # To install the oracle JDBC driver, set the following URL (in this example, we set the URL for the Oracle 11 driver. Please update it to your target driver URL.).
   # If downloading the driver requires authentication, please set the .netrc secret file with a key "netrc" to use basic auth.
   # oracleJdbcDriver:
