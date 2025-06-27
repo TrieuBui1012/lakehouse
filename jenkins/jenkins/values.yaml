@@ -962,7 +962,7 @@ agent:
     # -- Repository to pull the agent jnlp image from
     repository: "trieubui1012/jenkins-inbound-agent"
     # -- Tag of the image to pull
-    tag: "3309.v27b_9314fd1a_4-5-v2"
+    tag: "3309.v27b_9314fd1a_4-5-v1"
   # -- Configure working directory for default agent
   workingDir: "/home/jenkins/agent"
   nodeUsageMode: "NORMAL"
@@ -1026,9 +1026,9 @@ agent:
   # - type: ConfigMap
   #   configMapName: myconfigmap
   #   mountPath: /var/myapp/myconfigmap
-  # - type: EmptyDir
-  #   mountPath: /var/run/docker.sock
-  #   memory: false
+    - type: EmptyDir
+      mountPath: /var/run/
+      memory: false
   # - type: EphemeralVolume
   #   mountPath: /var/myapp/myephemeralvolume
   #   accessModes: ReadWriteOnce
@@ -1057,7 +1057,7 @@ agent:
   # Configure the attributes as they appear in the corresponding Java class for that type
   # https://github.com/jenkinsci/kubernetes-plugin/tree/master/src/main/java/org/csanchez/jenkins/plugins/kubernetes/volumes/workspace
   # -- Workspace volume (defaults to EmptyDir)
-  workspaceVolume: {}
+  workspaceVolume: []
   ## DynamicPVC example
   # - type: DynamicPVC
   #   configMapName: myconfigmap
@@ -1086,7 +1086,11 @@ agent:
   # -- Environment variables for the agent Pod
   envVars:
     - name: DOCKER_HOST
-      value: "tcp://localhost:2375"
+      value: "tcp://localhost:2376"
+    - name: DOCKER_TLS_VERIFY
+      value: "1"
+    - name: DOCKER_CERT_PATH
+      value: "/certs/client"
   # - name: PATH
   #   value: /usr/local/bin
   # -- Mount a secret as environment variable
@@ -1164,12 +1168,12 @@ agent:
     - sideContainerName: dind
       image:
         repository: docker
-        tag: dind
+        tag: "24-dind"
       command: dockerd-entrypoint.sh
-      args: ""
+      args: "--host=tcp://0.0.0.0:2376 --host=unix:///var/run/docker.sock --tlsverify --tlscacert=/certs/server/ca.pem --tlscert=/certs/server/cert.pem --tlskey=/certs/server/key.pem --tlsclientcacert=/certs/client/ca.pem --tlsclientcert=/certs/client/cert.pem --tlsclientkey=/certs/client/key.pem"
       envVars:
         - name: DOCKER_TLS_CERTDIR
-          value: ""
+          value: "/certs"
       privileged: true
       resources:
         requests:
@@ -1178,6 +1182,11 @@ agent:
         limits:
           cpu: 1
           memory: 2Gi
+      volumeMounts:
+        - name: docker-certs
+          mountPath: /certs
+        - name: docker-sock
+          mountPath: /var/run
 
   # Useful when configuring agents only with the podTemplates value, since the default podTemplate populated by values mentioned above will be excluded in the rendered template.
   # -- Disable the default Jenkins Agent configuration

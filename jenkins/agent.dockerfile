@@ -23,10 +23,6 @@ RUN apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin d
 RUN usermod -aG docker jenkins && \
     newgrp docker
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chown jenkins:jenkins /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 USER jenkins
 
 RUN "/entrypoint.sh"
