@@ -1088,9 +1088,7 @@ agent:
     - name: DOCKER_HOST
       value: "tcp://localhost:2376"
     - name: DOCKER_TLS_VERIFY
-      value: "1"
-    - name: DOCKER_CERT_PATH
-      value: "/certs/client"
+      value: ""
   # - name: PATH
   #   value: /usr/local/bin
   # -- Mount a secret as environment variable
@@ -1168,12 +1166,12 @@ agent:
     - sideContainerName: dind
       image:
         repository: docker
-        tag: "24-dind"
+        tag: "dind"
       command: dockerd-entrypoint.sh
-      args: "--host=tcp://0.0.0.0:2376 --host=unix:///var/run/docker.sock --tlsverify --tlscacert=/certs/server/ca.pem --tlscert=/certs/server/cert.pem --tlskey=/certs/server/key.pem --tlsclientcacert=/certs/client/ca.pem --tlsclientcert=/certs/client/cert.pem --tlsclientkey=/certs/client/key.pem"
+      args: ""
       envVars:
-        - name: DOCKER_TLS_CERTDIR
-          value: "/certs"
+        - name: DOCKER_TLS_VERIFY
+          value: ""
       privileged: true
       resources:
         requests:
@@ -1183,8 +1181,6 @@ agent:
           cpu: 1
           memory: 2Gi
       volumeMounts:
-        - name: docker-certs
-          mountPath: /certs
         - name: docker-sock
           mountPath: /var/run
 
