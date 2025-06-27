@@ -1026,9 +1026,9 @@ agent:
   # - type: ConfigMap
   #   configMapName: myconfigmap
   #   mountPath: /var/myapp/myconfigmap
-    - type: EmptyDir
-      mountPath: /var/run/
-      memory: false
+    # - type: EmptyDir
+    #   mountPath: /var/run/
+    #   memory: false
   # - type: EphemeralVolume
   #   mountPath: /var/myapp/myephemeralvolume
   #   accessModes: ReadWriteOnce
@@ -1086,7 +1086,7 @@ agent:
   # -- Environment variables for the agent Pod
   envVars:
     - name: DOCKER_HOST
-      value: "unix:///var/run/docker.sock"
+      value: "tcp://localhost:2376"
   # - name: PATH
   #   value: /usr/local/bin
   # -- Mount a secret as environment variable
@@ -1166,7 +1166,7 @@ agent:
         repository: docker
         tag: "dind"
       command: dockerd-entrypoint.sh
-      args: ""
+      args: "--host=tcp://0.0.0.0:2376"
       envVars:
         - name: DOCKER_TLS_VERIFY
           value: ""
