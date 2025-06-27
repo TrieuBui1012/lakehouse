@@ -1086,9 +1086,7 @@ agent:
   # -- Environment variables for the agent Pod
   envVars:
     - name: DOCKER_HOST
-      value: "tcp://localhost:2376"
-    - name: DOCKER_TLS_VERIFY
-      value: ""
+      value: "unix:///var/run/docker.sock"
   # - name: PATH
   #   value: /usr/local/bin
   # -- Mount a secret as environment variable
@@ -1180,9 +1178,6 @@ agent:
         limits:
           cpu: 1
           memory: 2Gi
-      volumeMounts:
-        - name: docker-sock
-          mountPath: /var/run
 
   # Useful when configuring agents only with the podTemplates value, since the default podTemplate populated by values mentioned above will be excluded in the rendered template.
   # -- Disable the default Jenkins Agent configuration
