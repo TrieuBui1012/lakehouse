@@ -36,10 +36,10 @@ controller:
     # -- Controller image registry
     registry: "docker.io"
     # -- Controller image repository
-    repository: "trieubui1012/jenkins"
+    repository: "jenkins/jenkins"
 
     # -- Controller image tag override; i.e., tag: "2.440.1-jdk21"
-    tag: 2.504.2-jdk21-v1
+    tag: 2.504.2-jdk21
 
     # -- Controller image tag label
     tagLabel: jdk21
@@ -962,7 +962,7 @@ agent:
     # -- Repository to pull the agent jnlp image from
     repository: "trieubui1012/jenkins-inbound-agent"
     # -- Tag of the image to pull
-    tag: "3309.v27b_9314fd1a_4-5-v1"
+    tag: "3309.v27b_9314fd1a_4-5"
   # -- Configure working directory for default agent
   workingDir: "/home/jenkins/agent"
   nodeUsageMode: "NORMAL"
@@ -1158,21 +1158,21 @@ agent:
 
   # Containers specified here are added to all agents. Set key empty to remove container from additional agents.
   # -- Add additional containers to the agents
-  additionalContainers: []
-  #  - sideContainerName: dind
-  #    image:
-  #      repository: docker
-  #      tag: dind
-  #    command: dockerd-entrypoint.sh
-  #    args: ""
-  #    privileged: true
-  #    resources:
-  #      requests:
-  #        cpu: 500m
-  #        memory: 1Gi
-  #      limits:
-  #        cpu: 1
-  #        memory: 2Gi
+  additionalContainers:
+   - sideContainerName: dind
+     image:
+       repository: docker
+       tag: dind
+     command: dockerd-entrypoint.sh
+     args: ""
+     privileged: true
+     resources:
+       requests:
+         cpu: 500m
+         memory: 1Gi
+       limits:
+         cpu: 1
+         memory: 2Gi
 
   # Useful when configuring agents only with the podTemplates value, since the default podTemplate populated by values mentioned above will be excluded in the rendered template.
   # -- Disable the default Jenkins Agent configuration

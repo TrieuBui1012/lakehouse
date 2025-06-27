@@ -18,4 +18,5 @@ spec:
       allowEmpty: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
