@@ -1086,7 +1086,7 @@ agent:
   # -- Environment variables for the agent Pod
   envVars:
     - name: DOCKER_HOST
-      value: "tcp://localhost:2376"
+      value: "tcp://localhost:2375"
   # - name: PATH
   #   value: /usr/local/bin
   # -- Mount a secret as environment variable
@@ -1166,7 +1166,7 @@ agent:
         repository: docker
         tag: "dind"
       command: dockerd-entrypoint.sh
-      args: "--host=tcp://0.0.0.0:2376"
+      args: "--host=tcp://0.0.0.0:2375"
       envVars:
         - name: DOCKER_TLS_VERIFY
           value: ""
