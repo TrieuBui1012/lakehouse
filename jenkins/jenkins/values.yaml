@@ -1086,7 +1086,7 @@ agent:
   # -- Environment variables for the agent Pod
   envVars:
     - name: DOCKER_HOST
-      value: "tcp://localhost:2375"
+      value: "tcp://dind:2375"
   # - name: PATH
   #   value: /usr/local/bin
   # -- Mount a secret as environment variable
