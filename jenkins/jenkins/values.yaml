@@ -962,7 +962,7 @@ agent:
     # -- Repository to pull the agent jnlp image from
     repository: "trieubui1012/jenkins-inbound-agent"
     # -- Tag of the image to pull
-    tag: "3309.v27b_9314fd1a_4-5-v1"
+    tag: "3309.v27b_9314fd1a_4-5-v2"
   # -- Configure working directory for default agent
   workingDir: "/home/jenkins/agent"
   nodeUsageMode: "NORMAL"
@@ -1086,7 +1086,7 @@ agent:
   # -- Environment variables for the agent Pod
   envVars:
     - name: DOCKER_HOST
-      value: "tcp://dind:2375"
+      value: "tcp://localhost:2375"
   # - name: PATH
   #   value: /usr/local/bin
   # -- Mount a secret as environment variable
