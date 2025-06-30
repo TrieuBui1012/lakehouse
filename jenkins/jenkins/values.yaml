@@ -781,7 +781,7 @@ controller:
 
   # Openshift route
   route:
-    # -- Enables openshift route
+    # -- Enables openshift route237
     enabled: false
     # -- Route labels
     labels: {}
@@ -1087,6 +1087,8 @@ agent:
   envVars:
     - name: DOCKER_HOST
       value: "tcp://localhost:2375"
+    - name: DOCKER_TLS_VERIFY
+      value: ""
   # - name: PATH
   #   value: /usr/local/bin
   # -- Mount a secret as environment variable
@@ -1166,7 +1168,7 @@ agent:
         repository: docker
         tag: "dind"
       command: dockerd-entrypoint.sh
-      args: "--host=tcp://0.0.0.0:2375"
+      args: "--host=tcp://localhost:2375"
       envVars:
         - name: DOCKER_TLS_VERIFY
           value: ""

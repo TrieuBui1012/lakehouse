@@ -24,5 +24,3 @@ RUN usermod -aG docker jenkins && \
     newgrp docker
 
 USER jenkins
-
-RUN "/entrypoint.sh"
