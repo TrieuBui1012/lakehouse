@@ -1086,7 +1086,7 @@ agent:
   # -- Environment variables for the agent Pod
   envVars:
     - name: DOCKER_HOST
-      value: "tcp://localhost:2376"
+      value: "tcp://localhost:2375"
     - name: DOCKER_TLS_CERTPATH
       value: "/certs/client"
     - name: DOCKER_TLS_VERIFY
@@ -1172,7 +1172,7 @@ agent:
         repository: docker
         tag: "dind"
       command: dockerd-entrypoint.sh
-      args: "--host=tcp://0.0.0.0:2376 --tlsverify"
+      args: "--host=tcp://0.0.0.0:2375"
       privileged: true
       resources:
         requests:
