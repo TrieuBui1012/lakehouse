@@ -1090,7 +1090,7 @@ agent:
     - name: DOCKER_TLS_CERTPATH
       value: ""
     - name: DOCKER_TLS_VERIFY
-      value: "0"
+      value: ""
     - name: DOCKER_TLS_CERTDIR
       value: ""
   # - name: PATH
