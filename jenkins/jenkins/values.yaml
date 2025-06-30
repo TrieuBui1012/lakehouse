@@ -1091,6 +1091,8 @@ agent:
       value: "/certs/client"
     - name: DOCKER_TLS_VERIFY
       value: "1"
+    - name: DOCKER_TLS_CERTDIR
+      value: "/certs"
   # - name: PATH
   #   value: /usr/local/bin
   # -- Mount a secret as environment variable
@@ -1171,9 +1173,6 @@ agent:
         tag: "dind"
       command: dockerd-entrypoint.sh
       args: "--host=tcp://0.0.0.0:2376 --tlsverify"
-      envVars:
-        - name: DOCKER_TLS_CERTDIR
-          value: "/certs"
       privileged: true
       resources:
         requests:
