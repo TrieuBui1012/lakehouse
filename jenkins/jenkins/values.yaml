@@ -1088,11 +1088,11 @@ agent:
     - name: DOCKER_HOST
       value: "tcp://localhost:2375"
     - name: DOCKER_TLS_CERTPATH
-      value: "/certs/client"
+      value: ""
     - name: DOCKER_TLS_VERIFY
-      value: "1"
+      value: "0"
     - name: DOCKER_TLS_CERTDIR
-      value: "/certs"
+      value: ""
   # - name: PATH
   #   value: /usr/local/bin
   # -- Mount a secret as environment variable
