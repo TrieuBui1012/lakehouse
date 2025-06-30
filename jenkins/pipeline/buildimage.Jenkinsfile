@@ -6,7 +6,7 @@ pipeline {
 	}
 
     environment {
-        NEXUS_REPO = 'nexus.nexus.svc.cluster.local:8081'
+        NEXUS_REPO = 'nexus.nexus.svc.cluster.local:8081/docker-repo'
         IMAGE_NAME = 'vprofile'
     }
 
