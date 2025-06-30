@@ -79,8 +79,8 @@ pipeline {
                     protocol: 'http',
                     nexusUrl: 'nexus.nexus.svc.cluster.local:8081',
                     groupId: 'com.vprofile',
-                    version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
-                    repository: 'vprofile-repo',
+                    version: "${env.BUILD_ID}_${env.BUILD_TIMESTAMP}",
+                    repository: 'maven-repo',
                     credentialsId: 'nexus-login',
                     artifacts: [
                         [artifactId: 'vproapp',
