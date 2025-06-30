@@ -1087,6 +1087,8 @@ agent:
   envVars:
     - name: DOCKER_HOST
       value: "tcp://localhost:2375"
+    - name: DOCKER_TLS_CERTPATH
+      value: ""
     - name: DOCKER_TLS_VERIFY
       value: ""
   # - name: PATH
@@ -1168,8 +1170,10 @@ agent:
         repository: docker
         tag: "dind"
       command: dockerd-entrypoint.sh
-      args: "--host=tcp://localhost:2375"
+      args: "--host=tcp://0.0.0.0:2375 --tls=false"
       envVars:
+        - name: DOCKER_TLS_CERTPATH
+          value: ""
         - name: DOCKER_TLS_VERIFY
           value: ""
       privileged: true
