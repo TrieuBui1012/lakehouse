@@ -1026,9 +1026,9 @@ agent:
   # - type: ConfigMap
   #   configMapName: myconfigmap
   #   mountPath: /var/myapp/myconfigmap
-    - type: EmptyDir
-      mountPath: /certs
-      memory: false
+    # - type: EmptyDir
+    #   mountPath: /certs
+    #   memory: false
   # - type: EphemeralVolume
   #   mountPath: /var/myapp/myephemeralvolume
   #   accessModes: ReadWriteOnce
