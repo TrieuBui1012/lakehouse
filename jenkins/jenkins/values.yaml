@@ -1175,11 +1175,11 @@ agent:
       privileged: true
       resources:
         requests:
-          cpu: 500m
+          cpu: 1
           memory: 1Gi
         limits:
           cpu: 1
-          memory: 2Gi
+          memory: 1Gi
 
   # Useful when configuring agents only with the podTemplates value, since the default podTemplate populated by values mentioned above will be excluded in the rendered template.
   # -- Disable the default Jenkins Agent configuration
