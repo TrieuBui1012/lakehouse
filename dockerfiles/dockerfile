@@ -1,10 +1,13 @@
 FROM maven:3.9.10-eclipse-temurin-21 AS BUILD_IMAGE
 
-# Install git
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+# Install wget and unzip
+RUN apt-get update && apt-get install -y wget unzip && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/hkhcoder/vprofile-project.git
-RUN cd vprofile-project && git checkout docker && mvn install
+RUN wget https://github.com/hkhcoder/vprofile-project/archive/refs/heads/local.zip && \
+    unzip local.zip && \
+    mv vprofile-project-local vprofile-project
+
+RUN cd vprofile-project && mvn install
 
 FROM tomcat:10-jdk21
 
