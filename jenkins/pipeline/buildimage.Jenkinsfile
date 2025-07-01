@@ -95,7 +95,7 @@ pipeline {
         stage('Build app image') {
             steps {
                 script {
-                    dockerImage = docker.build("$IMAGE_NAME:$BUILD_NUMBER", "./Docker-files/app/")
+                    dockerImage = docker.build("$IMAGE_NAME:$BUILD_NUMBER", "./Docker-files/app/multistage")
                 }
             }
         }
