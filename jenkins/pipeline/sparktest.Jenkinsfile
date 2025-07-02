@@ -17,6 +17,7 @@ pipeline {
 
 	    stage('Build'){
 	        steps{
+                updateGitlabCommitStatus name: 'build', state: 'pending'
                 withMaven(mavenSettingsConfig: 'maven-nexus){
                     sh 'mvn install -DskipTests'
                 }
@@ -94,6 +95,12 @@ pipeline {
             Check console output at $BUILD_URL to view the results.''',
                 subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!',
                 to: 'nhyzzchillax@gmail.com'
+        }
+        success {
+            updateGitlabCommitStatus name: 'build', state: 'success'
+        }
+        failure {
+            updateGitlabCommitStatus name: 'build', state: 'failed'
         }
     }
 }
