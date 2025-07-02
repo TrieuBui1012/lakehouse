@@ -1,4 +1,4 @@
-FROM jenkins/inbound-agent:3309.v27b_9314fd1a_4-6-jdk21
+FROM jenkins/inbound-agent:3309.v27b_9314fd1a_4-5
 
 COPY ./jdk8u452-b09 /opt/java/openjdk-8
 COPY ./jdk-11.0.27+6 /opt/java/openjdk-11
@@ -28,6 +28,11 @@ RUN apt-get update && \
 
 RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq && \
     chmod +x /usr/local/bin/yq
+
+RUN wget https://dlcdn.apache.org/maven/maven-3/3.9.10/binaries/apache-maven-3.9.10-bin.tar.gz && \
+    tar -xzvf apache-maven-3.9.10-bin.tar.gz -C /opt && \
+    rm apache-maven-3.9.10-bin.tar.gz && \
+    ln -s /opt/apache-maven-3.9.10/bin/mvn /usr/local/bin/mvn
 
 RUN apt-get remove -y wget && \
     apt-get autoremove -y && \
