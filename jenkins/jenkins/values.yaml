@@ -404,11 +404,11 @@ controller:
 
   # Plugins will be installed during Jenkins controller start
   # -- List of Jenkins plugins to install. If you don't want to install plugins, set it to `false`
-  installPlugins:
-    - kubernetes:4353.vb_47977da_9417
-    - workflow-aggregator:608.v67378e9d3db_1
-    - git:5.7.0
-    - configuration-as-code:1971.vf9280461ea_89
+  installPlugins: []
+    # - kubernetes:4353.vb_47977da_9417
+    # - workflow-aggregator:608.v67378e9d3db_1
+    # - git:5.7.0
+    # - configuration-as-code:1971.vf9280461ea_89
 
   # If set to false, Jenkins will download the minimum required version of all dependencies.
   # -- Download the minimum required version or latest version of all dependencies
@@ -962,7 +962,7 @@ agent:
     # -- Repository to pull the agent jnlp image from
     repository: "trieubui1012/jenkins-inbound-agent"
     # -- Tag of the image to pull
-    tag: "3309.v27b_9314fd1a_4-5-v1"
+    tag: "3309.v27b_9314fd1a_4-5"
   # -- Configure working directory for default agent
   workingDir: "/home/jenkins/agent"
   nodeUsageMode: "NORMAL"
@@ -1084,15 +1084,15 @@ agent:
 
   # Pod-wide environment, these vars are visible to any container in the agent pod
   # -- Environment variables for the agent Pod
-  envVars:
-    - name: DOCKER_HOST
-      value: "tcp://localhost:2375"
-    - name: DOCKER_TLS_CERTPATH
-      value: ""
-    - name: DOCKER_TLS_VERIFY
-      value: ""
-    - name: DOCKER_TLS_CERTDIR
-      value: ""
+  envVars: []
+    # - name: DOCKER_HOST
+    #   value: "tcp://localhost:2375"
+    # - name: DOCKER_TLS_CERTPATH
+    #   value: ""
+    # - name: DOCKER_TLS_VERIFY
+    #   value: ""
+    # - name: DOCKER_TLS_CERTDIR
+    #   value: ""
   # - name: PATH
   #   value: /usr/local/bin
   # -- Mount a secret as environment variable
@@ -1166,21 +1166,21 @@ agent:
 
   # Containers specified here are added to all agents. Set key empty to remove container from additional agents.
   # -- Add additional containers to the agents
-  additionalContainers:
-    - sideContainerName: dind
-      image:
-        repository: docker
-        tag: "dind"
-      command: dockerd-entrypoint.sh
-      args: "--host=tcp://0.0.0.0:2375"
-      privileged: true
-      resources:
-        requests:
-          cpu: 1
-          memory: 1Gi
-        limits:
-          cpu: 1
-          memory: 1Gi
+  additionalContainers: {}
+    # - sideContainerName: dind
+    #   image:
+    #     repository: docker
+    #     tag: "dind"
+    #   command: dockerd-entrypoint.sh
+    #   args: "--host=tcp://0.0.0.0:2375"
+    #   privileged: true
+    #   resources:
+    #     requests:
+    #       cpu: 1
+    #       memory: 1Gi
+    #     limits:
+    #       cpu: 1
+    #       memory: 1Gi
 
   # Useful when configuring agents only with the podTemplates value, since the default podTemplate populated by values mentioned above will be excluded in the rendered template.
   # -- Disable the default Jenkins Agent configuration
