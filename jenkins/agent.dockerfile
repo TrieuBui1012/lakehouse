@@ -24,7 +24,7 @@ USER root
 #     newgrp docker
 
 RUN apt-get update && \
-    apt-get -y install wget
+    apt-get -y install wget unzip
 
 RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq && \
     chmod +x /usr/local/bin/yq
@@ -34,7 +34,14 @@ RUN wget https://dlcdn.apache.org/maven/maven-3/3.9.10/binaries/apache-maven-3.9
     rm apache-maven-3.9.10-bin.tar.gz && \
     ln -s /opt/apache-maven-3.9.10/bin/mvn /usr/local/bin/mvn
 
-RUN apt-get remove -y wget && \
+RUN wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.1.0.4889-linux-x64.zip && \
+    unzip sonar-scanner-cli-7.1.0.4889-linux-x64.zip && \
+    mv sonar-scanner-7.1.0.4889-linux-x64 /opt/sonar-scanner && \
+    rm sonar-scanner-cli-7.1.0.4889-linux-x64.zip
+
+ENV PATH="${PATH}:/opt/sonar-scanner/bin"
+
+RUN apt-get remove -y wget unzip && \
     apt-get autoremove -y && \
     apt-get clean
 
