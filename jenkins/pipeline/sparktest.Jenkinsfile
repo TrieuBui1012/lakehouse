@@ -102,5 +102,8 @@ pipeline {
         failure {
             updateGitlabCommitStatus name: 'build', state: 'failed'
         }
+        aborted {
+            updateGitlabCommitStatus name: 'build', state: 'canceled'
+        }
     }
 }
