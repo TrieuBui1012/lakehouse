@@ -1,0 +1,15 @@
+kubernetes
+workflow-aggregator
+git
+configuration-as-code
+minio
+nexus-artifact-uploader
+sonar
+build-timestamp
+pipeline-maven
+pipeline-utility-steps
+blueocean
+docker-workflow
+docker-build-publish
+email-ext
+gitlab-plugin
