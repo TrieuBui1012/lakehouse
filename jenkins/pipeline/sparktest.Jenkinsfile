@@ -82,7 +82,7 @@ pipeline {
                         [artifactId: 'sparkappwithdeps',
                         classifier: '',
                         file: 'target/spark8s-1.0-SNAPSHOT-jar-with-dependencies.jar',
-                        type: 'jar']
+                        type: 'jar'],
                         [artifactId: 'sparkapp',
                         classifier: '',
                         file: 'target/spark8s-1.0-SNAPSHOT.jar',
