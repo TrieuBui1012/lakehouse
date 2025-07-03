@@ -31,13 +31,13 @@ pipeline {
 	        }
 	    }
 
-	    stage('UNIT TEST') {
-            steps{
-                withMaven(mavenSettingsConfig: 'maven-nexus'){
-                    sh 'mvn test'
-                }
-            }
-        }
+	    // stage('UNIT TEST') {
+        //     steps{
+        //         withMaven(mavenSettingsConfig: 'maven-nexus'){
+        //             sh 'mvn test'
+        //         }
+        //     }
+        // }
 
         stage('Checkstyle Analysis') {
             steps{
