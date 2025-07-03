@@ -26,7 +26,7 @@ pipeline {
 	        post {
 	           success {
 	              echo 'Now Archiving it...'
-	              archiveArtifacts artifacts: '**/target/*.war'
+	              archiveArtifacts artifacts: '**/target/*.jar'
 	           }
 	        }
 	    }
@@ -85,6 +85,7 @@ pipeline {
                         type: 'jar']
                     ]
                 )
+                minio bucket: 'cicd', credentialsId: 'minio', excludes: '', host: 'https://s3.cloudfly.vn', includes: '**/target/*.jar', targetFolder: 'spark'
             }
         }
 	}
