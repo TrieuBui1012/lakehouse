@@ -7,31 +7,31 @@ pipeline {
 	stages {
 
 
-	    stage('Fetch code') {
-            steps {
-               git branch: 'main', url: 'https://gitlab.com/trieubui1012-gitops/jenkins-ci.git', credentialsId: 'gitlab-login'
-            }
+	    // stage('Fetch code') {
+        //     steps {
+        //        git branch: 'main', url: 'https://gitlab.com/trieubui1012-gitops/jenkins-ci.git', credentialsId: 'gitlab-login'
+        //     }
 
-	    }
+	    // }
 
 
-	    stage('Build'){
-	        steps{
-                updateGitlabCommitStatus name: 'build', state: 'pending'
-                withMaven(mavenSettingsConfig: 'maven-nexus'){
-                    sh 'mvn -v'
-                    sh 'mvn install -DskipTests'
-                }
-	        }
+	    // stage('Build'){
+	    //     steps{
+        //         updateGitlabCommitStatus name: 'build', state: 'pending'
+        //         withMaven(mavenSettingsConfig: 'maven-nexus'){
+        //             sh 'mvn -v'
+        //             sh 'mvn install -DskipTests'
+        //         }
+	    //     }
 
-	        // post {
-	        //    success {
-	        //       echo 'Now Archiving it...'
-	        //       archiveArtifacts artifacts: '**/target/*.jar'
-            //       updateGitlabCommitStatus name: 'build', state: 'success'
-	        //    }
-	        // }
-	    }
+	    //     post {
+	    //        success {
+	    //           echo 'Now Archiving it...'
+	    //           archiveArtifacts artifacts: '**/target/*.jar'
+        //           updateGitlabCommitStatus name: 'build', state: 'success'
+	    //        }
+	    //     }
+	    // }
 
 	    // stage('UNIT TEST') {
         //     steps{
@@ -86,7 +86,7 @@ pipeline {
             steps {
                 echo 'Running Trivy scan...'
                 updateGitlabCommitStatus name: 'trivy-scan', state: 'pending'
-                sh 'trivy fs --skip-db-update --skip-java-db-update --skip-check-update --no-progress --exit-code 1 --severity HIGH,CRITICAL --format table -o trivy-scan-report.txt .'
+                sh 'trivy fs --skip-db-update --skip-java-db-update --no-progress --exit-code 1 --severity HIGH,CRITICAL --format table -o trivy-scan-report.txt .'
                 updateGitlabCommitStatus name: 'trivy-scan', state: 'success'
             }
         }
