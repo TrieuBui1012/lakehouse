@@ -123,6 +123,8 @@ pipeline {
         stage('Update ArgoCD YAML') {
             steps {
                 updateGitlabCommitStatus name: 'update-yaml', state: 'pending'
+                sh 'git branch'
+                sh 'git checkout main'
                 sh '''
                 git config --local user.email "trieubqt1012@gmail.com"
                 git config --local user.name "TrieuBui1012"
