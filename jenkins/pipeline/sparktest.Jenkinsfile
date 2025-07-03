@@ -86,10 +86,7 @@ pipeline {
             steps {
                 echo 'Running Trivy scan...'
                 updateGitlabCommitStatus name: 'trivy-scan', state: 'pending'
-                sh 'trivy fs --offline-scan --no-progress --exit-code 1 --severity HIGH,CRITICAL --format table -o trivy-scan-report.txt .'
-                updateGitlabCommitStatus name: 'trivy-scan', state: 'success'
-                archiveArtifacts artifacts: 'trivy-scan-report.txt'
-                updateGitlabCommitStatus name: 'build', state: 'success'
+                sh 'trivy fs --offline-scan --no-progress --exit-code 1 --severity HIGH,CRITICAL --format table . | tee trivy-scan-report.txt'
             }
         }
 
