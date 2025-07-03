@@ -18,7 +18,7 @@ pipeline {
 	    stage('Build'){
 	        steps{
                 updateGitlabCommitStatus name: 'build', state: 'pending'
-                withMaven(mavenSettingsConfig: 'maven-nexus){
+                withMaven(mavenSettingsConfig: 'maven-nexus'){
                     sh 'mvn install -DskipTests'
                 }
 	        }
@@ -33,7 +33,7 @@ pipeline {
 
 	    stage('UNIT TEST') {
             steps{
-                withMaven(mavenSettingsConfig: 'maven-nexus){
+                withMaven(mavenSettingsConfig: 'maven-nexus'){
                     sh 'mvn test'
                 }
             }
@@ -41,7 +41,7 @@ pipeline {
 
         stage('Checkstyle Analysis') {
             steps{
-                withMaven(mavenSettingsConfig: 'maven-nexus){
+                withMaven(mavenSettingsConfig: 'maven-nexus'){
                     sh 'mvn checkstyle:checkstyle'
                 }
             }
