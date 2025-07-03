@@ -113,7 +113,7 @@ pipeline {
         stage('Checkout ArgoCD repo') {
             steps {
                 updateGitlabCommitStatus name: 'upload-artifacts', state: 'success'
-                updateGitlabCommitStatus name: 'checkout-argocd', state: 'pending
+                updateGitlabCommitStatus name: 'checkout-argocd', state: 'pending'
                 deleteDir()
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlab-login', url: 'https://gitlab.com/trieubui1012-gitops/spark-yaml.git']])
             }
