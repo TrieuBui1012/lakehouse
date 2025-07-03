@@ -27,6 +27,7 @@ pipeline {
 	        //    success {
 	        //       echo 'Now Archiving it...'
 	        //       archiveArtifacts artifacts: '**/target/*.jar'
+            //       updateGitlabCommitStatus name: 'build', state: 'success'
 	        //    }
 	        // }
 	    }
@@ -34,29 +35,28 @@ pipeline {
 	    // stage('UNIT TEST') {
         //     steps{
         //         echo 'Running unit tests...'
-        //         updateGitlabCommitStatus name: 'build', state: 'success'
         //         updateGitlabCommitStatus name: 'test', state: 'pending'
         //         withMaven(mavenSettingsConfig: 'maven-nexus'){
         //             sh 'mvn test'
         //         }
+        //         updateGitlabCommitStatus name: 'test', state: 'success'
         //     }
         // }
 
         // stage('Checkstyle Analysis') {
         //     steps{
         //         echo 'Running Checkstyle analysis...'
-        //         updateGitlabCommitStatus name: 'test', state: 'success'
         //         updateGitlabCommitStatus name: 'checkstyle', state: 'pending'
         //         withMaven(mavenSettingsConfig: 'maven-nexus'){
         //             sh 'mvn checkstyle:checkstyle'
         //         }
+        //         updateGitlabCommitStatus name: 'checkstyle', state: 'success'
         //     }
         // }
 
         // stage("Sonar Code Analysis") {
         //     steps {
         //         echo 'Running SonarQube analysis...'
-        //         updateGitlabCommitStatus name: 'checkstyle', state: 'success'
         //         updateGitlabCommitStatus name: 'sonarqube', state: 'pending
         //       withSonarQubeEnv('sonarserver') {
         //         sh '''sonar-scanner -Dsonar.projectKey=test \
@@ -66,23 +66,23 @@ pipeline {
         //             -Dsonar.scala.version=2.12 \
         //             -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
         //         }
+        //         updateGitlabCommitStatus name: 'sonarqube', state: 'success'
         //     }
         // }
 
         // stage("Quality Gate") {
         //     steps {
         //         echo 'Waiting for SonarQube Quality Gate...'
-        //         updateGitlabCommitStatus name: 'sonarqube', state: 'success'
         //         updateGitlabCommitStatus name: 'qualitygate', state: 'pending'
         //         timeout(time: 30, unit: 'MINUTES') {
         //             waitForQualityGate abortPipeline: true 
         //         }
+        //        updateGitlabCommitStatus name: 'qualitygate', state: 'success'
         //     }
         // }
 
         stage("Upload artifacts"){
             steps {
-                updateGitlabCommitStatus name: 'qualitygate', state: 'success'
                 updateGitlabCommitStatus name: 'upload-artifacts', state: 'pending'
                 echo 'Uploading artifacts...'
                 // echo 'Uploading artifacts to Nexus...'
@@ -107,21 +107,21 @@ pipeline {
                 // )
                 echo 'Uploading artifacts to Minio...'
                 minio bucket: 'cicd', credentialsId: 'minio', excludes: '', host: 'http://minio.minio-dev.svc.cluster.local:9000', includes: '**/target/*.jar', targetFolder: 'spark'
+                updateGitlabCommitStatus name: 'upload-artifacts', state: 'success'
             }
         }
 
         stage('Checkout ArgoCD repo') {
             steps {
-                updateGitlabCommitStatus name: 'upload-artifacts', state: 'success'
                 updateGitlabCommitStatus name: 'checkout-argocd', state: 'pending'
                 deleteDir()
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlab-login', url: 'https://gitlab.com/trieubui1012-gitops/spark-yaml.git']])
+                updateGitlabCommitStatus name: 'checkout-argocd', state: 'success'
             }
         }
 
         stage('Update ArgoCD YAML') {
             steps {
-                updateGitlabCommitStatus name: 'checkout-argocd', state: 'success'
                 updateGitlabCommitStatus name: 'update-yaml', state: 'pending'
                 sh '''
                 git config --local user.email "trieubqt1012@gmail.com"
@@ -136,8 +136,9 @@ pipeline {
                 """
                 withCredentials([gitUsernamePassword(credentialsId: 'gitlab-login',
                     gitToolName: 'git-tool')]) {
-                    sh 'git push origin mains'
+                    sh 'git push origin main'
                 }
+                updateGitlabCommitStatus name: 'update-yaml', state: 'success'
             }  
         }
 	}
@@ -148,15 +149,6 @@ pipeline {
             Check console output at $BUILD_URL to view the results.''',
                 subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!',
                 to: 'nhyzzchillax@gmail.com'
-        }
-        success {
-            updateGitlabCommitStatus name: 'update-yaml', state: 'success'
-        }
-        failure {
-            updateGitlabCommitStatus name: 'update-yaml', state: 'failed'
-        }
-        aborted {
-            updateGitlabCommitStatus name: 'update-yaml', state: 'canceled'
         }
     }
 }
