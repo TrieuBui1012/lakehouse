@@ -110,7 +110,9 @@ pipeline {
                     '''
                 }
                 sh 'git add .'
-                sh 'git commit -m "Update spark8s-1.0-SNAPSHOT-jar-with-dependencies.jar artifact version to ${env.BUILD_ID}-${env.BUILD_TIMESTAMP}"'
+                sh """
+                git commit -m "Update spark8s-1.0-SNAPSHOT-jar-with-dependencies.jar artifact version to ${env.BUILD_ID}-${env.BUILD_TIMESTAMP}"
+                """
                 withCredentials([gitUsernamePassword(credentialsId: 'gitlab-login',
                     gitToolName: 'git-tool')]) {
                     sh 'git push'
