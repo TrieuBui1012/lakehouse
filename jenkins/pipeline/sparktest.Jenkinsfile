@@ -33,6 +33,9 @@ pipeline {
 
 	    // stage('UNIT TEST') {
         //     steps{
+        //         echo 'Running unit tests...'
+        //         updateGitlabCommitStatus name: 'build', state: 'success'
+        //         updateGitlabCommitStatus name: 'test', state: 'pending'
         //         withMaven(mavenSettingsConfig: 'maven-nexus'){
         //             sh 'mvn test'
         //         }
@@ -41,6 +44,9 @@ pipeline {
 
         // stage('Checkstyle Analysis') {
         //     steps{
+        //         echo 'Running Checkstyle analysis...'
+        //         updateGitlabCommitStatus name: 'test', state: 'success'
+        //         updateGitlabCommitStatus name: 'checkstyle', state: 'pending'
         //         withMaven(mavenSettingsConfig: 'maven-nexus'){
         //             sh 'mvn checkstyle:checkstyle'
         //         }
@@ -49,6 +55,9 @@ pipeline {
 
         // stage("Sonar Code Analysis") {
         //     steps {
+        //         echo 'Running SonarQube analysis...'
+        //         updateGitlabCommitStatus name: 'checkstyle', state: 'success'
+        //         updateGitlabCommitStatus name: 'sonarqube', state: 'pending
         //       withSonarQubeEnv('sonarserver') {
         //         sh '''sonar-scanner -Dsonar.projectKey=test \
         //             -Dsonar.projectName=test \
@@ -62,6 +71,9 @@ pipeline {
 
         // stage("Quality Gate") {
         //     steps {
+        //         echo 'Waiting for SonarQube Quality Gate...'
+        //         updateGitlabCommitStatus name: 'sonarqube', state: 'success'
+        //         updateGitlabCommitStatus name: 'qualitygate', state: 'pending'
         //         timeout(time: 30, unit: 'MINUTES') {
         //             waitForQualityGate abortPipeline: true 
         //         }
@@ -70,6 +82,9 @@ pipeline {
 
         stage("Upload artifacts"){
             steps {
+                updateGitlabCommitStatus name: 'qualitygate', state: 'success'
+                updateGitlabCommitStatus name: 'upload-artifacts', state: 'pending'
+                echo 'Uploading artifacts...'
                 // echo 'Uploading artifacts to Nexus...'
                 // nexusArtifactUploader(
                 //     nexusVersion: 'nexus3',
@@ -97,6 +112,8 @@ pipeline {
 
         stage('Checkout ArgoCD repo') {
             steps {
+                updateGitlabCommitStatus name: 'upload-artifacts', state: 'success'
+                updateGitlabCommitStatus name: 'checkout-argocd', state: 'pending
                 deleteDir()
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlab-login', url: 'https://gitlab.com/trieubui1012-gitops/spark-yaml.git']])
             }
@@ -104,11 +121,15 @@ pipeline {
 
         stage('Update ArgoCD YAML') {
             steps {
-                script {
-                    sh '''
+                updateGitlabCommitStatus name: 'checkout-argocd', state: 'success'
+                updateGitlabCommitStatus name: 'update-yaml', state: 'pending'
+                sh '''
+                git config --local user.email "trieubqt1012@gmail.com"
+                git config --local user.name "TrieuBui1012"
+                '''
+                sh '''
                     yq -i '.spec.mainApplicationFile = "s3://cicd/spark/spark8s-1.0-SNAPSHOT-jar-with-dependencies.jar"' spark-test.yaml
                     '''
-                }
                 sh 'git add .'
                 sh """
                 git commit -m "Update spark8s-1.0-SNAPSHOT-jar-with-dependencies.jar artifact version to ${env.BUILD_ID}-${env.BUILD_TIMESTAMP}"
@@ -129,13 +150,13 @@ pipeline {
                 to: 'nhyzzchillax@gmail.com'
         }
         success {
-            updateGitlabCommitStatus name: 'build', state: 'success'
+            updateGitlabCommitStatus name: 'update-yaml', state: 'success'
         }
         failure {
-            updateGitlabCommitStatus name: 'build', state: 'failed'
+            updateGitlabCommitStatus name: 'update-yaml', state: 'failed'
         }
         aborted {
-            updateGitlabCommitStatus name: 'build', state: 'canceled'
+            updateGitlabCommitStatus name: 'update-yaml', state: 'canceled'
         }
     }
 }
