@@ -91,35 +91,35 @@ pipeline {
             }
         }
 
-        stage("Upload artifacts"){
-            steps {
-                updateGitlabCommitStatus name: 'upload-artifacts', state: 'pending'
-                echo 'Uploading artifacts...'
-                // echo 'Uploading artifacts to Nexus...'
-                // nexusArtifactUploader(
-                //     nexusVersion: 'nexus3',
-                //     protocol: 'http',
-                //     nexusUrl: 'nexus.nexus.svc.cluster.local:8081',
-                //     groupId: 'com.sparkapp',
-                //     version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
-                //     repository: 'maven-releases',
-                //     credentialsId: 'nexus-login',
-                //     artifacts: [
-                //         [artifactId: 'sparkappwithdeps',
-                //         classifier: '',
-                //         file: 'target/spark8s-1.0-SNAPSHOT-jar-with-dependencies.jar',
-                //         type: 'jar'],
-                //         [artifactId: 'sparkapp',
-                //         classifier: '',
-                //         file: 'target/spark8s-1.0-SNAPSHOT.jar',
-                //         type: 'jar']
-                //     ]
-                // )
-                echo 'Uploading artifacts to Minio...'
-                minio bucket: 'cicd', credentialsId: 'minio', excludes: '', host: 'http://minio.minio-dev.svc.cluster.local:9000', includes: '**/target/*.jar,trivy-scan-report.txt', targetFolder: 'spark'
-                updateGitlabCommitStatus name: 'upload-artifacts', state: 'success'
-            }
-        }
+        // stage("Upload artifacts"){
+        //     steps {
+        //         updateGitlabCommitStatus name: 'upload-artifacts', state: 'pending'
+        //         echo 'Uploading artifacts...'
+        //         // echo 'Uploading artifacts to Nexus...'
+        //         // nexusArtifactUploader(
+        //         //     nexusVersion: 'nexus3',
+        //         //     protocol: 'http',
+        //         //     nexusUrl: 'nexus.nexus.svc.cluster.local:8081',
+        //         //     groupId: 'com.sparkapp',
+        //         //     version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+        //         //     repository: 'maven-releases',
+        //         //     credentialsId: 'nexus-login',
+        //         //     artifacts: [
+        //         //         [artifactId: 'sparkappwithdeps',
+        //         //         classifier: '',
+        //         //         file: 'target/spark8s-1.0-SNAPSHOT-jar-with-dependencies.jar',
+        //         //         type: 'jar'],
+        //         //         [artifactId: 'sparkapp',
+        //         //         classifier: '',
+        //         //         file: 'target/spark8s-1.0-SNAPSHOT.jar',
+        //         //         type: 'jar']
+        //         //     ]
+        //         // )
+        //         echo 'Uploading artifacts to Minio...'
+        //         minio bucket: 'cicd', credentialsId: 'minio', excludes: '', host: 'http://minio.minio-dev.svc.cluster.local:9000', includes: '**/target/*.jar,trivy-scan-report.txt', targetFolder: 'spark'
+        //         updateGitlabCommitStatus name: 'upload-artifacts', state: 'success'
+        //     }
+        // }
 
         // stage('Checkout ArgoCD repo') {
         //     steps {
