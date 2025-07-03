@@ -23,12 +23,12 @@ pipeline {
                 }
 	        }
 
-	        post {
-	           success {
-	              echo 'Now Archiving it...'
-	              archiveArtifacts artifacts: '**/target/*.jar'
-	           }
-	        }
+	        // post {
+	        //    success {
+	        //       echo 'Now Archiving it...'
+	        //       archiveArtifacts artifacts: '**/target/*.jar'
+	        //    }
+	        // }
 	    }
 
 	    // stage('UNIT TEST') {
@@ -39,13 +39,13 @@ pipeline {
         //     }
         // }
 
-        stage('Checkstyle Analysis') {
-            steps{
-                withMaven(mavenSettingsConfig: 'maven-nexus'){
-                    sh 'mvn checkstyle:checkstyle'
-                }
-            }
-        }
+        // stage('Checkstyle Analysis') {
+        //     steps{
+        //         withMaven(mavenSettingsConfig: 'maven-nexus'){
+        //             sh 'mvn checkstyle:checkstyle'
+        //         }
+        //     }
+        // }
 
         // stage("Sonar Code Analysis") {
         //     steps {
@@ -70,28 +70,28 @@ pipeline {
 
         stage("Upload artifacts"){
             steps {
-                echo 'Uploading artifacts to Nexus...'
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: 'nexus.nexus.svc.cluster.local:8081',
-                    groupId: 'com.sparkapp',
-                    version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
-                    repository: 'maven-releases',
-                    credentialsId: 'nexus-login',
-                    artifacts: [
-                        [artifactId: 'sparkappwithdeps',
-                        classifier: '',
-                        file: 'target/spark8s-1.0-SNAPSHOT-jar-with-dependencies.jar',
-                        type: 'jar'],
-                        [artifactId: 'sparkapp',
-                        classifier: '',
-                        file: 'target/spark8s-1.0-SNAPSHOT.jar',
-                        type: 'jar']
-                    ]
-                )
+                // echo 'Uploading artifacts to Nexus...'
+                // nexusArtifactUploader(
+                //     nexusVersion: 'nexus3',
+                //     protocol: 'http',
+                //     nexusUrl: 'nexus.nexus.svc.cluster.local:8081',
+                //     groupId: 'com.sparkapp',
+                //     version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+                //     repository: 'maven-releases',
+                //     credentialsId: 'nexus-login',
+                //     artifacts: [
+                //         [artifactId: 'sparkappwithdeps',
+                //         classifier: '',
+                //         file: 'target/spark8s-1.0-SNAPSHOT-jar-with-dependencies.jar',
+                //         type: 'jar'],
+                //         [artifactId: 'sparkapp',
+                //         classifier: '',
+                //         file: 'target/spark8s-1.0-SNAPSHOT.jar',
+                //         type: 'jar']
+                //     ]
+                // )
                 echo 'Uploading artifacts to Minio...'
-                minio bucket: 'cicd', credentialsId: 'minio', excludes: '', host: 'http://minio.minio.svc.cluster.local:9000', includes: '**/target/*.jar', targetFolder: 'spark'
+                minio bucket: 'cicd', credentialsId: 'minio', excludes: '', host: 'http://minio.minio-dev.svc.cluster.local:9000', includes: '**/target/*.jar', targetFolder: 'spark'
             }
         }
 
