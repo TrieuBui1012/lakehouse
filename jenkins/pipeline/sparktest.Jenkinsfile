@@ -89,7 +89,7 @@ pipeline {
                         type: 'jar']
                     ]
                 )
-                minio bucket: 'cicd', credentialsId: 'minio', excludes: '', host: 'https://s3.cloudfly.vn', includes: '**/target/*.jar', targetFolder: 'spark'
+                minio bucket: 'cicd', credentialsId: 'minio', excludes: '', host: 'http://s3.cloudfly.vn', includes: '**/target/*.jar', targetFolder: 'spark'
             }
         }
 
