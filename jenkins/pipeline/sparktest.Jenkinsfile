@@ -91,7 +91,7 @@ pipeline {
                     ]
                 )
                 echo 'Uploading artifacts to Minio...'
-                minio bucket: 'cicd', credentialsId: 'minio', excludes: '', host: 'http://s3.cloudfly.vn', includes: '**/target/*.jar', targetFolder: 'spark'
+                minio bucket: 'cicd', credentialsId: 'minio', excludes: '', host: 'http://minio.minio.svc.cluster.local:9000', includes: '**/target/*.jar', targetFolder: 'spark'
             }
         }
 
