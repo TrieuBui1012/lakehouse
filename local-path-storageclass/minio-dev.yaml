@@ -1,0 +1,61 @@
+# Deploys a new Namespace for the MinIO Pod
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: minio-dev # Change this value if you want a different namespace name
+  labels:
+    name: minio-dev # Change this value to match metadata.name
+---
+# Deploys a new MinIO Pod into the metadata.namespace Kubernetes namespace
+#
+# The `spec.containers[0].args` contains the command run on the pod
+# The `/data` directory corresponds to the `spec.containers[0].volumeMounts[0].mountPath`
+# That mount path corresponds to a Kubernetes HostPath which binds `/data` to a local drive or volume on the worker node where the pod runs
+# 
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: minio
+  name: minio
+  namespace: minio-dev # Change this value to match the namespace metadata.name
+spec:
+  containers:
+  - name: minio
+    image: quay.io/minio/minio:latest
+    command:
+    - /bin/bash
+    - -c
+    args: 
+    - minio server /data --console-address :9090
+    volumeMounts:
+    - mountPath: /data
+      name: localvolume # Corresponds to the `spec.volumes` Persistent Volume
+  volumes:
+  - name: localvolume
+    hostPath: # MinIO generally recommends using locally-attached volumes
+      path: /mnt/disk1/data # Specify a path to a local drive or volume on the Kubernetes worker node
+      type: DirectoryOrCreate # The path to the last directory must exist
+---
+# Deploys a new Service for the MinIO Pod
+# The Service exposes the MinIO Pod on port 9000 for the MinIO API and
+# port 9090 for the MinIO Console
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+  namespace: minio-dev # Change this value to match the namespace metadata.name
+spec:
+  selector:
+    app: minio # Change this value to match the Pod metadata.labels.app
+  ports:
+  - name: minio # Port for the MinIO API
+    port: 9000
+    targetPort: 9000
+    nodePort: 30090 # Change this value to a port number between 30000 and 32767 if you want to access the MinIO API from outside the cluster
+  - name: console # Port for the MinIO Console
+    port: 9090
+    targetPort: 9090
+    nodePort: 30091 # Change this value to a port number between 30000 and 32767 if you want to access the MinIO Console from outside the cluster
+  type: NodePort # Change this value to ClusterIP if you want to access the MinIO API and Console only from 
+---

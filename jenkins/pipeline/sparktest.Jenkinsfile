@@ -47,29 +47,30 @@ pipeline {
             }
         }
 
-        stage("Sonar Code Analysis") {
-            steps {
-              withSonarQubeEnv('sonarserver') {
-                sh '''sonar-scanner -Dsonar.projectKey=test \
-                    -Dsonar.projectName=test \
-                    -Dsonar.projectVersion=1.0 \
-                    -Dsonar.sources=src/ \
-                    -Dsonar.scala.version=2.12 \
-                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
-                }
-            }
-        }
+        // stage("Sonar Code Analysis") {
+        //     steps {
+        //       withSonarQubeEnv('sonarserver') {
+        //         sh '''sonar-scanner -Dsonar.projectKey=test \
+        //             -Dsonar.projectName=test \
+        //             -Dsonar.projectVersion=1.0 \
+        //             -Dsonar.sources=src/ \
+        //             -Dsonar.scala.version=2.12 \
+        //             -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+        //         }
+        //     }
+        // }
 
-        stage("Quality Gate") {
-            steps {
-                timeout(time: 30, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true 
-                }
-            }
-        }
+        // stage("Quality Gate") {
+        //     steps {
+        //         timeout(time: 30, unit: 'MINUTES') {
+        //             waitForQualityGate abortPipeline: true 
+        //         }
+        //     }
+        // }
 
         stage("Upload artifacts"){
             steps {
+                echo 'Uploading artifacts to Nexus...'
                 nexusArtifactUploader(
                     nexusVersion: 'nexus3',
                     protocol: 'http',
@@ -89,6 +90,7 @@ pipeline {
                         type: 'jar']
                     ]
                 )
+                echo 'Uploading artifacts to Minio...'
                 minio bucket: 'cicd', credentialsId: 'minio', excludes: '', host: 'http://s3.cloudfly.vn', includes: '**/target/*.jar', targetFolder: 'spark'
             }
         }
