@@ -9,7 +9,7 @@ pipeline {
 
 	    stage('Fetch code') {
             steps {
-               git branch: 'main', url: 'https://gitlab.com/trieubui1012-gitops/jenkins-ci.git', credentialsId: 'gitlab-token'
+               git branch: 'main', url: 'https://gitlab.com/trieubui1012-gitops/jenkins-ci.git', credentialsId: 'gitlab-login'
             }
 
 	    }
