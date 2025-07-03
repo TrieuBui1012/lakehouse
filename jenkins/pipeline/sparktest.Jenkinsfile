@@ -79,14 +79,41 @@ pipeline {
                     repository: 'maven-releases',
                     credentialsId: 'nexus-login',
                     artifacts: [
+                        [artifactId: 'sparkappwithdeps',
+                        classifier: '',
+                        file: 'target/spark8s-1.0-SNAPSHOT-jar-with-dependencies.jar',
+                        type: 'jar']
                         [artifactId: 'sparkapp',
                         classifier: '',
-                        file: 'target/*.jar',
+                        file: 'target/spark8s-1.0-SNAPSHOT.jar',
                         type: 'jar']
                     ]
                 )
                 minio bucket: 'cicd', credentialsId: 'minio', excludes: '', host: 'https://s3.cloudfly.vn', includes: '**/target/*.jar', targetFolder: 'spark'
             }
+        }
+
+        stage('Checkout ArgoCD repo') {
+            steps {
+                deleteDir()
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlab-login', url: 'https://gitlab.com/trieubui1012-gitops/spark-yaml.git']])
+            }
+        }
+
+        stage('Update ArgoCD YAML') {
+            steps {
+                script {
+                    sh '''
+                    yq -i '.spec.mainApplicationFile = "s3://cicd/spark/spark8s-1.0-SNAPSHOT-jar-with-dependencies.jar"' spark-test.yaml
+                    '''
+                }
+                sh 'git add .'
+                sh 'git commit -m "Update spark8s-1.0-SNAPSHOT-jar-with-dependencies.jar artifact version to ${env.BUILD_ID}-${env.BUILD_TIMESTAMP}"'
+                withCredentials([gitUsernamePassword(credentialsId: 'gitlab-login',
+                    gitToolName: 'git-tool')]) {
+                    sh 'git push'
+                }
+            }  
         }
 	}
 
