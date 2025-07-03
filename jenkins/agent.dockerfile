@@ -24,7 +24,7 @@ USER root
 #     newgrp docker
 
 RUN apt-get update && \
-    apt-get -y install wget unzip
+    apt-get -y install wget unzip gnupg
 
 RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq && \
     chmod +x /usr/local/bin/yq
@@ -40,6 +40,13 @@ RUN wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-s
     rm sonar-scanner-cli-7.1.0.4889-linux-x64.zip
 
 ENV PATH="${PATH}:/opt/sonar-scanner/bin"
+
+RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | tee /usr/share/keyrings/trivy.gpg > /dev/null && \
+    echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | tee -a /etc/apt/sources.list.d/trivy.list && \
+    apt-get update && \
+    apt-get install trivy && \
+    trivy fs --download-db-only && \
+    trivy fs --download-java-db-only
 
 RUN apt-get remove -y wget unzip && \
     apt-get autoremove -y && \
